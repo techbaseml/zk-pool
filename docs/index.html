@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111F"><meta name="description" content="Play ZK POOL, a free 8-ball billiards club for computer matches, local friends, online rooms and practice.">
+<link rel="manifest" href="./app.webmanifest"><link rel="icon" href="./icons/icon-192.png"><link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./style.css"><title>ZK POOL · Billiards Club</title>
+</head>
+<body>
+<svg aria-hidden="true" class="symbols" xmlns="http://www.w3.org/2000/svg">
+<symbol id="i-logo" viewBox="0 0 40 40"><path fill="currentColor" d="m20 1 16 9.4v19.2L20 39 4 29.6V10.4z"/><path fill="none" stroke="#14202a" stroke-width="1.1" d="m20 5 12.5 7.2v15.6L20 35l-12.5-7.2V12.2z"/><circle cx="20" cy="20" r="9" fill="#13202a"/><path d="M17.8 15.8c0-2.2 4.4-2.2 4.4 0s-4.4 2.3-4.4 4.6 4.4 2.5 4.4 0-4.4-2.3-4.4-4.6Z" fill="none" stroke="#F2CA85" stroke-width="1.5" transform="translate(0 1.2)"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h8m4 0h4M4 17h3m4 0h9"/><circle cx="14" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="3"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 3v3m6-3v3m3 3h3m-3 6h3M9 18v3m6-3v3M3 9h3m-3 6h3"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2.5 19c.4-3.3 2.6-5.3 6.5-5.3s6.1 2 6.5 5.3M16 5.4c4 .4 4 5.1 0 5.6M17 14c2.6.4 4.1 2 4.5 4.5"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5"/><path d="M4 9h16M4 15h16"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="m14 2-9 12h6l-1 8 9-13h-6z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5.3Q8 4 12 7q4-3 9-1.7v13Q16 17 12 20q-4-3-9-1.7ZM12 7v13"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+</svg>
+<header class="topbar"><div class="top-inner">
+<button class="brand" type="button" data-action="home" aria-label="ZK Pool clubhouse"><svg><use href="#i-logo"/></svg><span>ZK <em>POOL</em></span></button>
+<nav class="navlinks" aria-label="Main navigation"><button data-action="home" aria-current="page">Clubhouse</button><button data-action="stats">Statistics</button><button data-action="rules">Rulebook</button></nav>
+<div class="userbar"><button class="iconbtn" data-action="settings" aria-label="Settings"><svg><use href="#i-settings"/></svg></button><button class="identity" data-action="profile"><span id="avatar" class="avatar">P</span><span id="player-name">Player</span></button>
+<details class="mobmenu"><summary aria-label="Open navigation"><svg><use href="#i-menu"/></svg></summary><nav aria-label="Mobile navigation"><button data-action="home">Clubhouse</button><button data-action="stats">Statistics</button><button data-action="rules">Rulebook</button></nav></details></div>
+</div></header>
+<main class="shell">
+<section id="home" aria-label="Clubhouse">
+<div class="hero-wrap">
+<div class="hero-light"></div><canvas id="hero" width="1120" height="620" aria-label="Interactive billiards table preview"></canvas>
+<div class="hero-copy"><p class="eyebrow"><span class="goldline"></span> ZK LABS BILLIARDS CLUB</p>
+<h1>ZK <em>POOL</em></h1><p class="tagline">AIM <i>•</i> STRIKE <i>•</i> CONQUER</p>
+<button class="primary hero-play" data-action="quick"><svg><use href="#i-play"/></svg> Play now</button></div>
+</div>
+<section class="modes" aria-labelledby="modes-heading"><div class="section-line"><h2 id="modes-heading">Choose your game</h2><span class="section-rule"></span></div>
+<div class="main-modes">
+<button class="mode-card" data-action="computer"><span class="art art-computer"></span><span class="card-content"><span class="card-title">Play vs Computer</span><span class="card-desc">Five levels, from beginner to expert.</span><span class="card-arrow"><svg><use href="#i-arrow"/></svg></span></span></button>
+<button class="mode-card" data-action="friend"><span class="art art-friend"></span><span class="card-content"><span class="card-title">Play vs Friend</span><span class="card-desc">Take turns on one device.</span><span class="card-arrow"><svg><use href="#i-arrow"/></svg></span></span></button>
+<button class="mode-card" data-action="online"><span class="art art-online"></span><span class="card-content"><span class="card-title">Online Multiplayer</span><span class="card-desc">Invite a friend to a private room.</span><span class="card-arrow"><svg><use href="#i-arrow"/></svg></span></span></button>
+</div><div class="secondary-modes">
+<button class="secondary-card" data-action="practice"><span class="mini-icon"><svg><use href="#i-target"/></svg></span><span><b>Practice</b><small>Drills and free shooting</small></span><svg class="arrow"><use href="#i-arrow"/></svg></button>
+<button class="secondary-card" data-action="quick"><span class="mini-icon"><svg><use href="#i-bolt"/></svg></span><span><b>Quick Play</b><small>Start an offline match</small></span><svg class="arrow"><use href="#i-arrow"/></svg></button>
+</div></section></section>
+<section id="game" hidden aria-label="Match table"><div class="game-top"><div><p class="eyebrow"><span class="goldline"></span> ZK POOL</p><h2 id="game-title">Match table</h2></div><button data-action="exit">Exit match</button></div><div id="score" aria-live="polite"></div>
+<div class="table-stage"><canvas id="table" width="1120" height="620" aria-label="Pool table. Point or touch to aim, then use the shot controls."></canvas></div>
+<div id="game-status" role="status"></div><div id="controls" aria-label="Shot controls"></div>
+</section>
+</main>
+<footer><span class="footer-lockup"><svg><use href="#i-logo"/></svg> ZK LABS</span><a href="https://github.com/techbaseml" target="_blank" rel="noopener noreferrer">by TechBaseML</a></footer>
+<dialog id="dialog" aria-label="ZK Pool"><div id="dialog-body"></div></dialog>
+<script type="module" src="./app.js"></script>
+</body></html>

@@ -1,0 +1,10 @@
+import {readdir,readFile,writeFile,cp,rm} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const files=(await readdir('public',{recursive:true,withFileTypes:true})).filter(f=>f.isFile()&&f.name!=='sw.js').map(f=>(f.parentPath+'/'+f.name).replace(/^.*?public\//,'')).sort();
+const h=createHash('sha256');for(const f of files)h.update(await readFile('public/'+f));
+const sw=`const CACHE='zk-pool-${h.digest('hex').slice(0,12)}';const assets=${JSON.stringify(['./',...files.map(f=>'./'+f)])};
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(assets))));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('zk-pool-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin||u.pathname.includes('/api/'))return;e.respondWith(caches.open(CACHE).then(async c=>(await c.match(e.request))||(e.request.mode==='navigate'?await c.match('./index.html'):null)||fetch(e.request)))});
+`;
+await writeFile('public/sw.js',sw);await rm('dist',{recursive:true,force:true});await cp('public','dist',{recursive:true});console.log(files.length+' offline assets packaged');

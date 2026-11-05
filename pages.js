@@ -1,0 +1,11 @@
+import {cp,readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+await mkdir('docs',{recursive:true});await cp('public','docs',{recursive:true});
+let network=await readFile('public/network.js','utf8');
+network=network.slice(0,network.indexOf('export async function watch'))+(await readFile('hosting/watch.js','utf8')).replace("fetch('/api/rooms/'","fetch(base+'/'");
+await writeFile('docs/network.js',network);
+await writeFile('docs/config.js',"export const API_ORIGIN='https://zk-pool-rooms.sanjaykrishnacvra.chatgpt.site';\n");
+let sw=await readFile('public/sw.js','utf8');
+const version=createHash('sha256').update(sw+network+await readFile('docs/config.js','utf8')).digest('hex').slice(0,12);
+await writeFile('docs/sw.js',sw.replace(/zk-pool-[a-f0-9]+/,'zk-pool-pages-'+version));
+await writeFile('docs/.nojekyll','');
