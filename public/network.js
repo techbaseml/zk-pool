@@ -1,13 +1,15 @@
 import {API_ORIGIN} from './config.js';
-const base=API_ORIGIN+'/api/rooms';
-export async function request(url,body,auth){const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json',...(auth?{Authorization:'Bearer '+auth.key}:{})},body:JSON.stringify(body)});let data;try{data=await res.json()}catch{throw Error('The room server is unavailable. Check the connection and server address.')}if(!res.ok)throw Error(data.error||'Room request failed');return data}
-export const enter=(name,code)=>request(base+(code?'/'+encodeURIComponent(code.toUpperCase())+'/join':''),{name});
-export const act=(auth,body)=>request(base+'/'+auth.code+'/act',body,auth);
+const endpoint=API_ORIGIN+'/functions/v1/pool';
+async function request(body){const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let data;try{data=await res.json()}catch{throw Error('Room server returned HTTP '+res.status)}if(!res.ok)throw Error(data.error||'Room request failed');return data}
+export const enter=(name,code)=>request(code?{op:'join',name,code:code.toUpperCase()}:{op:'create',name});
+export const act=(auth,body)=>request({op:'act',code:auth.code,key:auth.key,body});
 export async function watch(auth,signal,event,disconnected){
+ let last='';
  while(!signal.aborted){try{
- const r=await fetch(base+'/'+auth.code+'/stream',{headers:{Authorization:'Bearer '+auth.key},signal});
- if(!r.ok){if([403,404].includes(r.status)){disconnected('Room expired. Create or join another room.',true);return}throw Error()}
- const reader=r.body.pipeThrough(new TextDecoderStream()).getReader();let pending='';
- while(!signal.aborted){const {done,value}=await reader.read();if(done)break;pending+=value;let nl;while((nl=pending.indexOf('\n'))>=0){const line=pending.slice(0,nl);pending=pending.slice(nl+1);if(line)event(JSON.parse(line))}} 
- }catch{}if(signal.aborted)return;disconnected('Connection interrupted. Reconnecting…');await new Promise(r=>setTimeout(r,1200))}
+ const value=await request({op:'state',code:auth.code,key:auth.key});
+ const signature=JSON.stringify(value);
+ if(signature!==last){last=signature;event({kind:'state',value})}
+ }catch(e){if(signal.aborted)return;disconnected(e.message||'Connection interrupted',/expired|unknown|credential/i.test(e.message));}
+ await new Promise(resolve=>setTimeout(resolve,700));
+ }
 }
